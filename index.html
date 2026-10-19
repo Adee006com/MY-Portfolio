@@ -10,895 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap"
         rel="stylesheet" />
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0b0d15;
-            --bg-secondary: #131621;
-            --bg-card: #1a1e2e;
-            --bg-card-hover: #22273b;
-            --text-primary: #f0f2f8;
-            --text-secondary: #a8b0d0;
-            --text-muted: #6b7499;
-            --accent-1: #6c63ff;
-            --accent-2: #a855f7;
-            --accent-gradient: linear-gradient(135deg, #6c63ff, #a855f7);
-            --shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            --shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.3);
-            --radius: 16px;
-            --radius-sm: 10px;
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --sidebar-width: 280px;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-1);
-            border-radius: 10px;
-        }
-
-        /* ----- HAMBURGER ----- */
-        .hamburger {
-            position: fixed;
-            top: 20px;
-            left: 24px;
-            z-index: 1100;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .hamburger:hover {
-            background: var(--bg-card);
-            transform: scale(1.05);
-        }
-
-        .hamburger svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--text-primary);
-            stroke-width: 2;
-            fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .hamburger .cross {
-            display: none;
-        }
-
-        .hamburger.active .ham {
-            display: none;
-        }
-
-        .hamburger.active .cross {
-            display: block;
-        }
-
-        /* ----- SIDEBAR ----- */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: var(--sidebar-width);
-            height: 100vh;
-            background: var(--bg-secondary);
-            border-right: 1px solid rgba(255, 255, 255, 0.04);
-            z-index: 1000;
-            transition: transform var(--transition);
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            padding: 75px 24px 32px;
-            transform: translateX(calc(-1 * var(--sidebar-width) - 20px));
-        }
-
-        .sidebar.open {
-            transform: translateX(0);
-        }
-
-        .sidebar-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 48px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .sidebar-brand .logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--accent-gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 20px;
-            color: #fff;
-            flex-shrink: 0;
-            box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.3);
-        }
-
-        .sidebar-brand .brand-name {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .sidebar-brand .brand-sub {
-            font-size: 12px;
-            color: var(--text-muted);
-            font-weight: 400;
-            -webkit-text-fill-color: var(--text-muted);
-            display: block;
-            margin-top: -2px;
-        }
-
-        .sidebar nav {
-            flex: 1;
-        }
-
-        .sidebar nav li {
-            margin-bottom: 4px;
-        }
-
-        .sidebar nav li a {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: var(--transition);
-            position: relative;
-            cursor: pointer;
-        }
-
-        .sidebar nav li a .nav-icon {
-            width: 22px;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-            opacity: 0.6;
-            transition: var(--transition);
-        }
-
-        .sidebar nav li a:hover,
-        .sidebar nav li a.active {
-            background: rgba(108, 99, 255, 0.12);
-            color: #fff;
-        }
-
-        .sidebar nav li a:hover .nav-icon,
-        .sidebar nav li a.active .nav-icon {
-            opacity: 1;
-            color: var(--accent-1);
-        }
-
-        .sidebar nav li a.active::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 3px;
-            height: 28px;
-            border-radius: 0 4px 4px 0;
-            background: var(--accent-gradient);
-        }
-
-        .sidebar-footer {
-            margin-top: auto;
-            padding-top: 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .sidebar-footer .social-links {
-            display: flex;
-            gap: 12px;
-        }
-
-        .sidebar-footer .social-links a {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: var(--text-muted);
-            transition: var(--transition);
-        }
-
-        .sidebar-footer .social-links a:hover {
-            background: var(--accent-1);
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(108, 99, 255, 0.3);
-        }
-
-        /* ----- MAIN ----- */
-        .main {
-            flex: 1;
-            min-height: 100vh;
-            padding: 48px 56px 80px;
-            margin-left: 0;
-            transition: margin var(--transition);
-        }
-
-        .main.sidebar-open {
-            margin-left: var(--sidebar-width);
-        }
-
-        section {
-            display: none;
-            animation: fadeUp 0.5s ease forwards;
-        }
-
-        section.active {
-            display: block;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(24px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section-title {
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: inline-block;
-        }
-
-        .section-subtitle {
-            color: var(--text-muted);
-            font-size: 16px;
-            margin-bottom: 40px;
-            font-weight: 400;
-        }
-
-        /* ----- HOME ----- */
-        .infocontainer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 48px;
-            min-height: calc(100vh - 160px);
-            padding: 20px 0;
-        }
-
-        .devinfo {
-            flex: 1;
-            max-width: 620px;
-        }
-
-        .devinfo .greeting {
-            font-size: 16px;
-            font-weight: 500;
-            color: var(--accent-1);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .devinfo .name {
-            font-size: 52px;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-            line-height: 1.1;
-            margin-bottom: 8px;
-        }
-
-        .devinfo .name .highlight {
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .devinfo .title-role {
-            font-size: 22px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .devinfo .bio {
-            font-size: 16px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            max-width: 480px;
-            margin-bottom: 28px;
-        }
-
-        .devinfo .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 15px;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: var(--accent-gradient);
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(108, 99, 255, 0.35);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(108, 99, 255, 0.45);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1.5px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--accent-1);
-            background: rgba(108, 99, 255, 0.08);
-            transform: translateY(-2px);
-        }
-
-        .devpic {
-            flex-shrink: 0;
-        }
-
-        .devpic img {
-            width: 282px;
-            height: 406px;
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            object-fit: cover;
-            border: 3px solid rgba(108, 99, 255, 0.2);
-            box-shadow: 0 0 60px rgba(108, 99, 255, 0.12);
-            transition: var(--transition);
-        }
-
-        .devpic img:hover {
-            transform: scale(1.02);
-            border-color: rgba(108, 99, 255, 0.5);
-            box-shadow: 0 0 80px rgba(108, 99, 255, 0.2);
-        }
-
-        /* ----- ABOUT ----- */
-        .intro {
-            max-width: 820px;
-            padding: 31px 17px;
-        }
-
-        .intro .about-text {
-            color: var(--text-secondary);
-            font-size: 16px;
-            line-height: 1.9;
-            margin-bottom: 32px;
-        }
-
-        .intro .about-text strong {
-            color: var(--text-primary);
-        }
-
-        .intro .about-text p {
-            margin-bottom: 16px;
-        }
-
-        /* ----- SKILLS ----- */
-        .skillcontainer {
-            max-width: 720px;
-            padding: 52px 0;
-        }
-
-        .skillcontainer .skill-group {
-            margin-bottom: 28px;
-        }
-
-        .skillcontainer .skill-group-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
-        }
-
-        .skillitems {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .skill-item {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .skill-item .skill-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .skill-item .skill-label span:last-child {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        .skill-track {
-            width: 100%;
-            height: 6px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.06);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .skill-track .skill-bar {
-            height: 100%;
-            border-radius: 10px;
-            background: var(--accent-gradient);
-            width: 0%;
-            transition: width 1s ease;
-            position: relative;
-        }
-
-        .skill-track .skill-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
-        }
-
-        /* ----- BLOG ----- */
-        .blogcontainer {
-            max-width: 820px;
-            padding: 47px 16px;
-        }
-
-        .blogcontainer .blog-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-            margin-top: 12px;
-        }
-
-        .blogitem {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 28px 24px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            transition: var(--transition);
-        }
-
-        .blogitem:hover {
-            background: var(--bg-card-hover);
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-sm);
-            border-color: rgba(108, 99, 255, 0.15);
-        }
-
-        .blogitem .blog-tag {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 4px 12px;
-            border-radius: 50px;
-            background: rgba(108, 99, 255, 0.12);
-            color: var(--accent-1);
-            margin-bottom: 12px;
-        }
-
-        .blogitem h2 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-            line-height: 1.3;
-        }
-
-        .blogitem p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 16px;
-        }
-
-        .blogitem .blog-meta {
-            font-size: 12px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .blogitem .blog-meta .dot {
-            width: 3px;
-            height: 3px;
-            border-radius: 50%;
-            background: var(--text-muted);
-        }
-
-        /* ----- CONTACT ----- */
-        .contact {
-            padding: 17px 11px;
-        }
-
-        .contactform {
-            max-width: 620px;
-            padding: 52px 12px;
-        }
-
-        .contactform form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .contactform .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .contactform .form-group label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-
-        .contactform .form-group input,
-        .contactform .form-group textarea {
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            background: var(--bg-card);
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 15px;
-            transition: var(--transition);
-            outline: none;
-            width: 100%;
-        }
-
-        .contactform .form-group input:focus,
-        .contactform .form-group textarea:focus {
-            border-color: var(--accent-1);
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
-            background: var(--bg-card-hover);
-        }
-
-        .contactform .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .contactform .form-group .helper {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
-
-        .contactform .form-row {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .contactform .form-row input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--accent-1);
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-
-        .contactform .form-row label {
-            font-size: 14px;
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-
-        .contactform .btn-submit {
-            align-self: flex-start;
-            padding: 14px 40px;
-            background: var(--accent-gradient);
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 20px rgba(108, 99, 255, 0.3);
-            font-family: inherit;
-        }
-
-        .contactform .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 32px rgba(108, 99, 255, 0.45);
-        }
-
-        .contactform .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        #formFeedback {
-            margin-top: 20px;
-            padding: 16px;
-            border-radius: var(--radius-sm);
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            display: none;
-        }
-
-        #formFeedback.success {
-            border-color: #34d399;
-            display: block;
-        }
-
-        #formFeedback.error {
-            border-color: #f87171;
-            display: block;
-        }
-
-        #formFeedback p {
-            margin: 4px 0;
-        }
-
-        #formFeedback a {
-            color: var(--accent-1);
-            text-decoration: underline;
-        }
-
-        /* ----- RESPONSIVE ----- */
-        @media (min-width: 769px) {
-            .sidebar {
-                transform: translateX(0);
-            }
-
-            .main {
-                margin-left: var(--sidebar-width);
-            }
-
-            .main.sidebar-open {
-                margin-left: var(--sidebar-width);
-            }
-
-            body.sidebar-closed .sidebar {
-                transform: translateX(calc(-1 * var(--sidebar-width) - 20px));
-            }
-
-            body.sidebar-closed .main {
-                margin-left: 0;
-            }
-
-            body.sidebar-closed .main.sidebar-open {
-                margin-left: 0;
-            }
-        }
-
-        @media (max-width: 1024px) {
-            .devpic img {
-                width: 183px;
-                height: 273px;
-            }
-
-            .devinfo .name {
-                font-size: 40px;
-            }
-
-            .blogcontainer .blog-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(calc(-1 * var(--sidebar-width) - 20px));
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main {
-                margin-left: 0;
-                padding: 80px 24px 60px;
-            }
-
-            .main.sidebar-open {
-                margin-left: 0;
-            }
-
-            .infocontainer {
-                flex-direction: column-reverse;
-                text-align: center;
-                gap: 32px;
-                min-height: auto;
-                padding: 20px 0 40px;
-            }
-
-            .devinfo {
-                max-width: 100%;
-            }
-
-            .devinfo .bio {
-                max-width: 100%;
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .devinfo .btn-group {
-                justify-content: center;
-            }
-
-            .devpic img {
-                width: 119px;
-                height: 185px;
-            }
-
-            .devinfo .name {
-                font-size: 32px;
-            }
-
-            .devinfo .title-role {
-                font-size: 18px;
-            }
-
-            .section-title {
-                font-size: 26px;
-            }
-
-            .contactform .form-row {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .blogcontainer .blog-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hamburger {
-                left: 16px;
-                top: 16px;
-                width: 40px;
-                height: 40px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .main {
-                padding: 72px 16px 48px;
-            }
-
-            .devinfo .name {
-                font-size: 26px;
-            }
-
-            .btn {
-                padding: 10px 20px;
-                font-size: 13px;
-            }
-
-            .devpic img {
-                width: 98px;
-                height: 140px;
-            }
-
-            .sidebar {
-                padding: 24px 16px 20px;
-                width: 260px;
-            }
-
-            .sidebar-brand .brand-name {
-                font-size: 17px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
@@ -930,6 +42,7 @@
                 <li><a href="#skills" data-section="skills"><span class="nav-icon">⚡</span> Skills</a></li>
                 <li><a href="#blog" data-section="blog"><span class="nav-icon">✎</span> Blog</a></li>
                 <li><a href="#contact" data-section="contact"><span class="nav-icon">✉</span> Contact</a></li>
+                <li><a href="#resume" data-section="resume"><span class="nav-icon">✉</span> Resume</a></li>
             </ul>
         </nav>
         <div class="sidebar-footer">
@@ -947,16 +60,16 @@
         <section id="home" class="active">
             <div class="infocontainer">
                 <div class="devinfo">
-                    <div class="greeting">👋 WELCOME</div>
+                    <div class="greeting"> WELCOME</div>
                     <h1 class="name">I'm <span class="highlight">Mohammad Adeel</span></h1>
-                    <div class="title-role">Full-Stack Developer &amp; Designer</div>
+                    <div class="title-role">Developer, Entrepreneur, Programmer &amp; Designer</div>
                     <p class="bio">
                         Crafting beautiful, performant, and human-centered digital experiences.
                         Specializing in React, Node.js, and modern UI/UX.
                     </p>
                     <div class="btn-group">
                         <a href="#contact" class="btn btn-primary" data-nav="contact">Let's talk →</a>
-                        <a href="#" class="btn btn-outline">View work</a>
+                        <a href="resume.txt" class="btn btn-outline" data-nav="resume">View resume</a>
                     </div>
                 </div>
                 <div class="devpic">
@@ -971,19 +84,23 @@
                 <p class="section-subtitle">Who I am and what drives me</p>
                 <div class="about-text">
                     <p>
-                        I'm a passionate <strong>Full-Stack Developer</strong> with 5+ years of experience
-                        building web applications that solve real problems. I believe in clean code,
-                        thoughtful design, and continuous learning.
+                        I'm a passionate <strong>Programmer, Developer, Entrepreneur</strong> fresher and not much of
+                        experience
+                        of <strong> building web applications</strong> that solve real problems. I'm interested in clean
+                        code,
+                        thoughtful design, <strong>real world problem solving</strong> and continuous learning.
                     </p>
                     <p>
-                        My journey started with a curiosity for how things work on the web, and
-                        evolved into a career focused on creating <strong>fast, accessible, and
-                            delightful</strong> digital products. I work across the entire stack — from
-                        designing intuitive interfaces to architecting robust backends.
+                        My journey started with a curiosity for <strong>how things work on the web</strong>, and still
+                        working on a
+                        career focused on creating <strong> web apps, software, digital products</strong>. I'm still
+                        learning and
+                        practicing
+                        backend development.
                     </p>
                     <p>
-                        When I'm not coding, I enjoy contributing to open-source, writing about
-                        tech, and mentoring aspiring developers.
+                        I also have programming knowledge in <strong>C, Java, JavaScript</strong>. I'm passionate to go
+                        deep in programming
                     </p>
                 </div>
             </div>
@@ -998,45 +115,75 @@
                     <div class="skill-group-label">Frontend</div>
                     <div class="skillitems">
                         <div class="skill-item">
-                            <div class="skill-label"><span>React / Next.js</span><span>90%</span></div>
+                            <div class="skill-label"><span>JavaScript</span><span>30%</span></div>
                             <div class="skill-track">
-                                <div class="skill-bar" style="width:90%;"></div>
+                                <div class="skill-bar" style="width:30%;"></div>
                             </div>
                         </div>
                         <div class="skill-item">
-                            <div class="skill-label"><span>TypeScript</span><span>85%</span></div>
+                            <div class="skill-label"><span>TypeScript</span><span>0%</span></div>
                             <div class="skill-track">
-                                <div class="skill-bar" style="width:85%;"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-label"><span>Tailwind / CSS</span><span>88%</span></div>
-                            <div class="skill-track">
-                                <div class="skill-bar" style="width:88%;"></div>
+                                <div class="skill-bar" style="width:0%;"></div>
                             </div>
                         </div>
                     </div>
+                    <div class="skill-item">
+                        <div class="skill-label"><span>CSS</span><span>40%</span></div>
+                        <div class="skill-track">
+                            <div class="skill-bar" style="width:40%;"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-label"><span>HTML</span><span>50%</span></div>
+                        <div class="skill-track">
+                            <div class="skill-bar" style="width:50%;"></div>
+                        </div>
+                    </div>
                 </div>
+
 
                 <div class="skill-group">
                     <div class="skill-group-label">Backend</div>
                     <div class="skillitems">
                         <div class="skill-item">
-                            <div class="skill-label"><span>Node.js / Express</span><span>82%</span></div>
+                            <div class="skill-label"><span>Node.js / Express</span><span>0%</span></div>
                             <div class="skill-track">
-                                <div class="skill-bar" style="width:82%;"></div>
+                                <div class="skill-bar" style="width:0%;"></div>
                             </div>
                         </div>
                         <div class="skill-item">
-                            <div class="skill-label"><span>Python / Django</span><span>70%</span></div>
+                            <div class="skill-label"><span>Python / Django</span><span>0%</span></div>
                             <div class="skill-track">
-                                <div class="skill-bar" style="width:70%;"></div>
+                                <div class="skill-bar" style="width:0%;"></div>
                             </div>
                         </div>
                         <div class="skill-item">
-                            <div class="skill-label"><span>GraphQL / REST</span><span>75%</span></div>
+                            <div class="skill-label"><span>GraphQL / REST</span><span>0%</span></div>
                             <div class="skill-track">
-                                <div class="skill-bar" style="width:75%;"></div>
+                                <div class="skill-bar" style="width:0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <div class="skill-group-label">Programming</div>
+                    <div class="skillitems">
+                        <div class="skill-item">
+                            <div class="skill-label"><span>C</span><span>50%</span></div>
+                            <div class="skill-track">
+                                <div class="skill-bar" style="width:50%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-label"><span>Java</span><span>40%</span></div>
+                            <div class="skill-track">
+                                <div class="skill-bar" style="width:40%;"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-label"><span>JavaScript</span><span>10%</span></div>
+                            <div class="skill-track">
+                                <div class="skill-bar" style="width:20%;"></div>
                             </div>
                         </div>
                     </div>
@@ -1046,25 +193,26 @@
                     <div class="skill-group-label">DevOps &amp; Tools</div>
                     <div class="skillitems">
                         <div class="skill-item">
-                            <div class="skill-label"><span>Docker / Kubernetes</span><span>65%</span></div>
+                            <div class="skill-label"><span>Docker / Kubernetes</span><span>0%</span></div>
                             <div class="skill-track">
-                                <div class="skill-bar" style="width:65%;"></div>
+                                <div class="skill-bar" style="width:0%;"></div>
                             </div>
                         </div>
                         <div class="skill-item">
-                            <div class="skill-label"><span>AWS / GCP</span><span>60%</span></div>
+                            <div class="skill-label"><span>AWS / GCP</span><span>0%</span></div>
                             <div class="skill-track">
-                                <div class="skill-bar" style="width:60%;"></div>
+                                <div class="skill-bar" style="width:0%;"></div>
                             </div>
                         </div>
                         <div class="skill-item">
-                            <div class="skill-label"><span>Git / CI/CD</span><span>80%</span></div>
+                            <div class="skill-label"><span>Git / CI/CD</span><span>0%</span></div>
                             <div class="skill-track">
-                                <div class="skill-bar" style="width:80%;"></div>
+                                <div class="skill-bar" style="width:0%;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </section>
 
@@ -1073,7 +221,7 @@
                 <h2 class="section-title">Blog</h2>
                 <p class="section-subtitle">Thoughts, tutorials, and insights</p>
                 <div class="blog-grid">
-                    <article class="blogitem">
+                    <!-- <article class="blogitem">
                         <span class="blog-tag">Tutorial</span>
                         <h2>Building a Design System with React &amp; Tailwind</h2>
                         <p>A deep dive into creating a scalable, component-driven design system for modern web apps.</p>
@@ -1100,7 +248,7 @@
                         <p>Actionable advice on portfolios, networking, and acing the technical interview.</p>
                         <div class="blog-meta"><span>Dec 5, 2025</span><span class="dot"></span><span>10 min read</span>
                         </div>
-                    </article>
+                    </article> -->
                 </div>
             </div>
         </section>
@@ -1135,204 +283,7 @@
 
     </main>
 
-    <script>
-        // ----- SIDEBAR TOGGLE -----
-        const hamburger = document.getElementById('hamburger');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-
-        function toggleSidebar() {
-            const isOpen = sidebar.classList.toggle('open');
-            hamburger.classList.toggle('active');
-            mainContent.classList.toggle('sidebar-open');
-            if (window.innerWidth >= 769) {
-                document.body.classList.toggle('sidebar-closed', !isOpen);
-            }
-        }
-
-        hamburger.addEventListener('click', toggleSidebar);
-
-        document.addEventListener('click', function (e) {
-            if (window.innerWidth < 769) {
-                const isClickInside = sidebar.contains(e.target) || hamburger.contains(e.target);
-                if (!isClickInside && sidebar.classList.contains('open')) {
-                    toggleSidebar();
-                }
-            }
-        });
-
-        // ----- NAVIGATION -----
-        const navLinks = document.querySelectorAll('.sidebar nav a[data-section]');
-        const sections = {
-            home: document.getElementById('home'),
-            about: document.getElementById('about'),
-            skills: document.getElementById('skills'),
-            blog: document.getElementById('blog'),
-            contact: document.getElementById('contact'),
-        };
-
-        document.querySelectorAll('[data-nav]').forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = this.getAttribute('data-nav');
-                switchSection(target);
-                if (window.innerWidth < 769 && sidebar.classList.contains('open')) {
-                    toggleSidebar();
-                }
-            });
-        });
-
-        function switchSection(sectionId) {
-            Object.values(sections).forEach(sec => sec.classList.remove('active'));
-            if (sections[sectionId]) sections[sectionId].classList.add('active');
-            navLinks.forEach(link => {
-                link.classList.toggle('active', link.getAttribute('data-section') === sectionId);
-            });
-            history.pushState(null, '', '#' + sectionId);
-        }
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', function (e) {
-                e.preventDefault();
-                const sectionId = this.getAttribute('data-section');
-                switchSection(sectionId);
-                if (window.innerWidth < 769 && sidebar.classList.contains('open')) {
-                    toggleSidebar();
-                }
-            });
-        });
-
-        window.addEventListener('hashchange', function () {
-            const hash = location.hash.replace('#', '') || 'home';
-            if (sections[hash]) switchSection(hash);
-        });
-
-        (function initFromHash() {
-            const hash = location.hash.replace('#', '') || 'home';
-            if (sections[hash]) switchSection(hash);
-            else switchSection('home');
-        })();
-
-        // ----- CONTACT FORM (AJAX) -----
-        const contactForm = document.getElementById('contactForm');
-        const feedback = document.getElementById('formFeedback');
-
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const message = document.getElementById('message').value.trim();
-            const agree = document.getElementById('agree').checked;
-
-            feedback.className = '';
-            feedback.style.display = 'block';
-
-            // Validation
-            if (!name || name.length < 2) {
-                feedback.className = 'error';
-                feedback.innerHTML = '<p style="color:#f87171;">❌ Please enter your full name (min 2 characters).</p>';
-                return;
-            }
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                feedback.className = 'error';
-                feedback.innerHTML = '<p style="color:#f87171;">❌ Please enter a valid email address.</p>';
-                return;
-            }
-            if (!message || message.length < 10) {
-                feedback.className = 'error';
-                feedback.innerHTML = '<p style="color:#f87171;">❌ Message must be at least 10 characters.</p>';
-                return;
-            }
-            if (!agree) {
-                feedback.className = 'error';
-                feedback.innerHTML = '<p style="color:#f87171;">❌ You must agree to the privacy policy.</p>';
-                return;
-            }
-
-            const submitBtn = contactForm.querySelector('.btn-submit');
-            const originalText = submitBtn.textContent;
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Sending…';
-
-            try {
-                // Use the backend URL (adjust if you deploy elsewhere)
-                const API_URL = 'http://localhost:5000/api/contact';
-
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name, email, message }),
-                });
-
-                const data = await response.json();
-
-                if (response.ok && data.success) {
-                    feedback.className = 'success';
-                    feedback.innerHTML = `
-                        <p style="color:#34d399;">✅ ${data.message}</p>
-                        <p style="margin-top:10px;">
-                            <a href="${data.whatsappLink}" target="_blank" style="color:var(--accent-1); text-decoration:underline;">
-                                📱 Click here to chat on WhatsApp
-                            </a>
-                        </p>
-                        <p style="font-size:14px; color:var(--text-muted);">A confirmation email has been sent to your inbox.</p>
-                    `;
-                    contactForm.reset();
-                } else {
-                    const errMsg = data.errors ? data.errors.join(', ') : data.message || 'Something went wrong.';
-                    feedback.className = 'error';
-                    feedback.innerHTML = `<p style="color:#f87171;">❌ ${errMsg}</p>`;
-                }
-            } catch (err) {
-                console.error('Fetch error:', err);
-                feedback.className = 'error';
-                feedback.innerHTML = `
-                    <p style="color:#f87171;">❌ Cannot reach the server. Make sure the backend is running on <strong>http://localhost:5000</strong></p>
-                    <p style="font-size:14px; color:var(--text-muted);">Try: <code>cd your-project && node server.js</code></p>
-                `;
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-            }
-        });
-
-        // ----- ANIMATE SKILL BARS ON VIEW -----
-        const skillBars = document.querySelectorAll('.skill-bar');
-        let skillAnimated = false;
-
-        function animateSkillBars() {
-            if (skillAnimated) return;
-            const skillsSection = document.getElementById('skills');
-            if (!skillsSection.classList.contains('active')) return;
-            skillBars.forEach(bar => {
-                const target = bar.style.width;
-                bar.style.width = '0%';
-                setTimeout(() => { bar.style.width = target; }, 200);
-            });
-            skillAnimated = true;
-        }
-
-        const observer = new MutationObserver(() => {
-            const skillsSection = document.getElementById('skills');
-            if (skillsSection.classList.contains('active') && !skillAnimated) {
-                animateSkillBars();
-            }
-        });
-        Object.values(sections).forEach(sec => observer.observe(sec, { attributes: true, attributeFilter: ['class'] }));
-
-        if (document.getElementById('skills').classList.contains('active')) {
-            animateSkillBars();
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-                toggleSidebar();
-            }
-        });
-
-        console.log('✅ Portfolio ready – contact form will work once the backend server is running.');
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
